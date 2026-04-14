@@ -1,6 +1,7 @@
 import React from 'react';
 import About from "./components/About.jsx";
 import Privacy from './components/Privacy.jsx';
+import Footer from './components/Footer.jsx';
 
 function App() {
   return(
@@ -12,6 +13,7 @@ function App() {
 
 <About />
 <Privacy />
+<Footer/>
 
     </div>
   );
