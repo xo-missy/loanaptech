@@ -27,7 +27,7 @@ function Footer() {
                 </ul>
                 
             </div>
-        </div>
+      
 
         <div className="footer-contact">
                 <h3>Get in touch</h3>
@@ -35,7 +35,7 @@ function Footer() {
                 <p>+1(555) 123-4567</p>
                 <p>Mon-fri:9AM-6pm</p>
             </div>
-
+  </div>
         <div className="footer-bottom">
             <p>&copy; 2023 LoanAptech. All rights reserved.</p>
         </div>
