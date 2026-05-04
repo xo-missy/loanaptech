@@ -11,7 +11,7 @@ connectDB();
 // Middleware
 app.use(cors({
   origin: ['http://localhost:5173', 
-    'https://loanaptech.vercel.app/'],
+    'https://loanaptech.vercel.app'],
   credentials: true
 }));
 

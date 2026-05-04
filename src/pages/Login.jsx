@@ -33,7 +33,7 @@ const Login = () => {
         setLoading(true);
 
         try {
-            const response = await fetch('https://loanaptech-mgvg.onrender.com/api/auth/login', {
+            const response = await fetch('https://loanaptech-1-d3yj.onrender.com/api/auth/login', {
                 method: 'POST',
                 headers: {
                     
