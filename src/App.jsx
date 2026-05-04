@@ -10,6 +10,9 @@ import Navbar from './components/Navbar.jsx';
 import Home from "./pages/Home.jsx";
 import Login from './pages/Login.jsx';
 import Dashboard from './pages/Dashboard.jsx';
+import Terms from './components/Terms.jsx';
+import Faq from './components/Faq.jsx';
+import ApplyLoan from './pages/ApplyLoan.jsx';
 
 
 function App() {
@@ -25,6 +28,9 @@ function App() {
             <Route path="/signup" element={<Signup />} />
             <Route path="/login" element={<Login />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path='/faq' element={<Faq/>}/>
+            <Route path='/terms' element={<Terms/>}/>
+            <Route path='/applyloan' element={<ApplyLoan/>}/>
             <Route path="*" element={<Home />} />
           </Routes>
         </main>
