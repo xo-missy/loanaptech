@@ -55,7 +55,9 @@ const Login = () => {
                 }, 3000);
             } else {
                 setError(data.message || 'Login failed');
+
             }
+            localStorage.setItem('user', JSON.stringify(data.user));   
         } catch (error) {
             setError('An error occurred during login');
         } finally {
