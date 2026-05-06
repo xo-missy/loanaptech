@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import "./ApplyLoan.css";
 const LoanApplication = () => {
-  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -23,7 +22,6 @@ const LoanApplication = () => {
     e.preventDefault();
     console.log('Application Submitted:', formData);
     alert('Application submitted successfully!');
-    navigate('/loan'); 
   };
 
   return (
