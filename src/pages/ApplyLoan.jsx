@@ -1,99 +1,171 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./ApplyLoan.css";
+
 const ApplyLoan = () => {
+  const navigate = useNavigate();
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(false); // ✅ fix 2: was []
+  const [loans, setLoans] = useState([]); // ✅ fix 2: was ""
+  const [error, setError] = useState(null);
   const [formData, setFormData] = useState({
-    fullName: '',
-    email: '',
-    loanAmount: '',
-    loanTenure: '',
-    purposeOfLoan: ''
+    name: "",
+    email: "",
+    amount: "",
+    tenure: "",
+    purpose: "", // ✅ fix 5: was "pupose"
   });
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
   };
 
-  const handleSubmit = (e) => {
+  useEffect(() => {
+    fetchApplyInfo();
+  }, []);
+
+  const fetchApplyInfo = async () => {
+    try {
+      setLoading(true);
+      setError("");
+
+      const userResponse = await fetch("https://loanaptech-1-d3yj.onrender.com/api/loans/apply", {
+        credentials: "include",
+      });
+      
+
+      const loansResponse = await fetch(
+        "https://loanaptech-1-d3yj.onrender.com/api/loans/my-loans",
+        {
+          credentials: "include",
+        },
+      );
+
+      if (loansResponse.ok) {
+        const loansData = await loansResponse.json();
+        setLoans(loansData.loans);
+      }
+    } catch (err) {
+      console.error(err);
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  }; // ✅ fix 1: handleSubmit moved outside
+
+  const handleSubmit = async (e) => {
+    // ✅ fix 1: now its own function
     e.preventDefault();
-    console.log('Application Submitted:', formData);
-    alert('Application submitted successfully!');
+    setError("");
+
+    if (
+      // ✅ fix 7: validation BEFORE navigate
+      !formData.name ||
+      !formData.email ||
+      !formData.amount ||
+      !formData.purpose || // ✅ fix 5: was "pupose"
+      !formData.tenure
+    ) {
+      setError("Please enter all fields");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const response = await fetch("https://loanaptech-1-d3yj.onrender.com/api/loans/apply", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json", // ✅ fix 4: was "Application/json"
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          email: formData.email,
+          name: formData.name,
+          amount: formData.amount,
+          duration: formData.tenure,
+          purpose: formData.purpose, // ✅ fix 5: was "pupose"
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Loan application failed");
+      }
+
+      alert("Application Successful");
+      navigate("/loans");
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="apply-container">
       <div className="apply-card">
-        <h1 className="apply-title">Apply for Loan</h1>
-        
-        <form className="apply-form" onSubmit={handleSubmit}>
-          <div className="input-group">
-            <label>Full Name</label>
-            <input
-              type="text"
-              name="fullName"
-              value={formData.fullName}
-              onChange={handleChange}
-              required
-            />
-          </div>
+        <div className="apply-title">
+          <form className="apply-form" onSubmit={handleSubmit}>
+            <div className="input-group">
+              {error && <p style={{ color: "red" }}>{error}</p>}
 
-          <div className="input-group">
-            <label>Email Address</label>
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-            />
-          </div>
+              <div className="apply-title">Apply For A Loan</div>
+              <label>Full Name</label>
+              <input
+                type="text"
+                name="name" // ✅ fix 6: connected to state
+                value={formData.name}
+                onChange={handleChange}
+                placeholder="Enter Your Name"
+                style={{ color: "black" }}
+              />
 
-          <div className="input-group">
-            <label>Loan Amount ($)</label>
-            <input
-              type="number"
-              name="loanAmount"
-              value={formData.loanAmount}
-              onChange={handleChange}
-              required
-            />
-          </div>
+              <label>Email Address</label>
+              <input
+                type="email"
+                name="email" // ✅ fix 6: connected to state
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="user@domain.com"
+              />
 
-          <div className="input-group">
-            <label>Loan Tenure</label>
-            <select
-              name="loanTenure"
-              value={formData.loanTenure}
-              onChange={handleChange}
-              required
-            >
-              <option value="">Select tenure</option>
-              <option value="12">12 months</option>
-              <option value="24">24 months</option>
-              <option value="36">36 months</option>
-              <option value="48">48 months</option>
-              <option value="60">60 months</option>
-            </select>
-          </div>
+              <label>Loan Amount($)</label>
+              <input
+                type="number"
+                name="amount" // ✅ fix 6: connected to state
+                value={formData.amount}
+                onChange={handleChange}
+                placeholder="5000"
+              />
 
-          <div className="input-group">
-            <label>Purpose of Loan</label>
-            <textarea
-              name="purposeOfLoan"
-              value={formData.purposeOfLoan}
-              onChange={handleChange}
-              placeholder="e.g., Home renovation, Business expansion, Education..."
-            />
-          </div>
+              <label>Loan Tenure (months)</label>
+              <input
+                type="number"
+                name="tenure" // ✅ fix 6: connected to state
+                value={formData.tenure}
+                onChange={handleChange}
+                placeholder="e.g 12, 24,36"
+              />
 
-          <button type="submit" className="apply-submit-btn">
-            Submit Application
-          </button>
-        </form>
+              <label>Purpose Of Loan</label>
+              <textarea
+                name="purpose" // ✅ fix 6: connected to state
+                value={formData.purpose}
+                onChange={handleChange}
+                placeholder="e.g Home renovation, Business Expansion, Education..."
+              />
+
+              <button className="apply-submit-btn" disabled={loading}>
+                {loading ? "Submitting..." : "Submit Application"}
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );
