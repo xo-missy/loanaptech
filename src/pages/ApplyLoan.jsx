@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import "./ApplyLoan.css";
-const LoanApplication = () => {
+const ApplyLoan = () => {
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -99,4 +99,4 @@ const LoanApplication = () => {
   );
 };
 
-export default LoanApplication;
+export default ApplyLoan;
