@@ -17,7 +17,7 @@ function Navbar() {
 
   const checkAuth = async () => {
     try {
-      const response = await fetch("https://loanaptech-69ab.onrender.com/api/auth/me", {
+      const response = await fetch("https://loanaptech-1-d3yj.onrender.com/api/auth/me", {
         credentials: "include"
       });
 
@@ -38,7 +38,7 @@ function Navbar() {
 
   const handleLogout = async () => {
     try {
-      const res = await fetch("https://loanaptech-69ab.onrender.com/api/auth/logout", {
+      const res = await fetch("https://loanaptech-1-d3yj.onrender.com/api/auth/logout", {
         method: "POST",
         credentials: "include"
       });
