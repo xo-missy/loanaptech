@@ -1,4 +1,3 @@
-// src/pages/Dashboard.jsx
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Dashboard.css";
@@ -18,7 +17,6 @@ const Dashboard = () => {
   const fetchDashboardData = async () => {
     try {
       setLoading(true);
-      setError("");
 
       // Fetch current user
       const userResponse = await fetch("https://loanaptech-1-d3yj.onrender.com/api/auth/me", {
@@ -42,7 +40,6 @@ const Dashboard = () => {
         setStats(statsData.stats);
       }
 
-      // Fetch my loans
       const loansResponse = await fetch("https://loanaptech-1-d3yj.onrender.com/api/loans/my-loans", {
         credentials: "include"
       });
@@ -53,7 +50,6 @@ const Dashboard = () => {
       }
 
     } catch (err) {
-      console.error(err);
       setError(err.message);
       navigate("/login");
     } finally {
@@ -67,6 +63,7 @@ const Dashboard = () => {
         method: "POST",
         credentials: "include"
       });
+
       localStorage.removeItem("user");
       navigate("/login");
     } catch (err) {
@@ -93,7 +90,7 @@ const Dashboard = () => {
           <h1>Dashboard</h1>
           {user && <div className="user-info">Welcome, {user.name}</div>}
         </div>
-        <button onClick={handleLogout} className="logout-btn">Logout</button>
+        <button onClick={handleLogout}>Logout</button>
       </div>
 
       {error && <div className="error-message">{error}</div>}
@@ -118,26 +115,21 @@ const Dashboard = () => {
           </div>
           <div className="stat-card">
             <h3>Total Borrowed</h3>
-            <div className="stat-value">
-              ₱{stats.totalBorrowed?.toLocaleString()}
-            </div>
+            <div className="stat-value">₦{stats.totalBorrowed?.toLocaleString()}</div>
           </div>
           <div className="stat-card">
             <h3>Total Repayment</h3>
-            <div className="stat-value">
-              ₱{stats.totalRepayment?.toLocaleString()}
-            </div>
+            <div className="stat-value">₦{stats.totalRepayment?.toLocaleString()}</div>
           </div>
         </div>
       )}
 
       <div className="dashboard-content">
-        <div className="content-header">
-          <h2>My Loans</h2>
-          <button className="apply-loan-btn" onClick={handleApplyLoan}>
-            Apply for New Loan
-          </button>
-        </div>
+        <h2>My Loans</h2>
+        
+        <button className="apply-loan-btn" onClick={handleApplyLoan}>
+          Apply for New Loan
+        </button>
 
         {loans.length > 0 ? (
           <table className="loans-table">
@@ -154,12 +146,12 @@ const Dashboard = () => {
             <tbody>
               {loans.map((loan) => (
                 <tr key={loan._id}>
-                  <td>₱{loan.amount?.toLocaleString()}</td>
+                  <td>₦{loan.amount.toLocaleString()}</td>
                   <td>{loan.purpose}</td>
                   <td>{loan.duration} months</td>
-                  <td>₱{parseFloat(loan.monthlyPayment)?.toLocaleString()}</td>
+                  <td>₦{parseFloat(loan.monthlyPayment).toLocaleString()}</td>
                   <td>
-                    <span className={`status-badge ${loan.status}`}>
+                    <span className={`status-badge status-${loan.status}`}>
                       {loan.status}
                     </span>
                   </td>
