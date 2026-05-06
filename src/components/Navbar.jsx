@@ -5,10 +5,11 @@ import "./Navbar.css";
 function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [user, setUser] = useState(null);
-const[loading, setLoading]= useState(true);
+  const [loading, setLoading] = useState(true);
   const location = useLocation();
   const navigate = useNavigate();
-const isActive = (path) => location.pathname === path;
+
+  const isActive = (path) => location.pathname === path;
   useEffect(() => {
 
     checkAuth();
@@ -16,33 +17,11 @@ const isActive = (path) => location.pathname === path;
 
   const checkAuth = async () => {
     try {
-      const response = await fetch("https://loanaptech-1-d3yj.onrender.com/api/auth/me", {
+      const response = await fetch("https://loanaptech-69ab.onrender.com/api/auth/me", {
         credentials: "include"
       });
 
       if (response.ok) {
-        const contentType = response.headers.get('content-type') || '';
-        const data = contentType.includes('application/json')
-          ? await response.json()
-          : { error: await response.text() };
-        setUser(data.user);
-      } else {
-        setUser(null);
-      }
-    } catch (error) {
-      setUser(null);
-    }
-  };
-
-  const isActive = (path) => location.pathname === path;
-
-  const handleLogout = async () => {
-    try {
-      await fetch("https://loanaptech-1-d3yj.onrender.com/api/auth/logout", {
-        method: "POST",
-        credentials: "include"
-      });
-if (response.ok) {
         const data = await response.json();
         setUser(data.user);
       } else {
@@ -59,7 +38,7 @@ if (response.ok) {
 
   const handleLogout = async () => {
     try {
-      const res = await fetch("https://loanaptech-1-d3yj.onrender.com/api/auth/logout", {
+      const res = await fetch("https://loanaptech-69ab.onrender.com/api/auth/logout", {
         method: "POST",
         credentials: "include"
       });
