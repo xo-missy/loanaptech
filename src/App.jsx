@@ -13,6 +13,7 @@ import Dashboard from './pages/Dashboard.jsx';
 import Terms from './components/Terms.jsx';
 import Faq from './components/Faq.jsx';
 import ApplyLoan from './pages/ApplyLoan.jsx';
+import LoanDetails from './pages/LoanDetails.jsx';
 
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
             <Route path='/faq' element={<Faq/>}/>
             <Route path='/terms' element={<Terms/>}/>
             <Route path='/apply' element={<ApplyLoan/>}/>
+            <Route path='/loans/:id' element={<LoanDetails/>}/>
             <Route path="*" element={<Home />} />
           </Routes>
         </main>
